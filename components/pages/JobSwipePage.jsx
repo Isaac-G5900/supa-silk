@@ -2,14 +2,18 @@
 
 import React, { useState } from "react";
 import JobCard from "@/components/cards/JobCard";
-import jobsData from "@/components/data/mockJobs"; // Mock data array
+import jobsData from "@/components/data/mockAdzunaJobs"; // Mock data array
 
 function JobSwipePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [savedJobs, setSavedJobs] = useState([]);
 
+  const jobsDataResults = jobsData.results;
+
+  console.log("Jobs Data Results length:", jobsDataResults.length);
+
   const handleSwipeRight = () => {
-    const job = jobsData[currentIndex];
+    const job = jobsDataResults[currentIndex];
     setSavedJobs([...savedJobs, job]);
     goToNext();
   };
@@ -19,7 +23,7 @@ function JobSwipePage() {
   };
 
   const goToNext = () => {
-    if (currentIndex < jobsData.length - 1) {
+    if (currentIndex < jobsDataResults.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
       alert("You’ve reached the end!");
@@ -28,10 +32,10 @@ function JobSwipePage() {
 
   return (
     <div className="h-auto w-ful flex flex-col items-center justify-center px-4">
-      {jobsData[currentIndex] ? (
+      {jobsDataResults[currentIndex] ? (
         <>
           <JobCard
-            job={jobsData[currentIndex]}
+            job={jobsDataResults[currentIndex]}
             swipeLeft={handleSwipeLeft}
             swipeRight={handleSwipeRight}
           />
