@@ -1,0 +1,80 @@
+/* Basic resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Main container with a soft blue background */
+.landing-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #e5eef5; /* You can adjust this color or use a gradient */
+  font-family: Arial, sans-serif;
+  padding: 2rem;
+}
+
+/* Wrapper for the left-side content */
+.content-container {
+  max-width: 500px;
+}
+
+/* Logo styling */
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: 'Poppins';
+  color: #1a202c; /* Dark charcoal gray/blue */
+  margin-bottom: 1rem;
+}
+
+/* Main headline */
+.headline {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #0e0e0f; /* Slightly lighter/different shade than the logo */
+}
+
+/* Subheading text */
+.subheading {
+  font-size: 1.125rem; /* ~18px */
+  color: #0e0e0f; /* Medium gray/blue tone */
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+/* Primary CTA Button */
+.primary-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background-color: #3385d1; /* Soft blue */
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Hover effect for the button */
+.primary-button:hover {
+  background-color: #8479fe; /* Darker blue on hover */
+}
+
+.jobcard-container{
+  /* align-items: right; */
+  display: flex;
+  align-items: center;
+  flex: 0 0 500px;
+  width: 500px;
+  margin-left: 10rem;
+
+}
+
+.jobcard-container > div
+{
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+}
