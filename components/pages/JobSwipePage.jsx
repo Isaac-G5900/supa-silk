@@ -10,6 +10,25 @@ function JobSwipePage() {
 
   const jobsDataResults = jobsData.results;
 
+  async function getData() {
+    const page = 1;
+    const url = `https://api.adzuna.com/v1/api/jobs/us/search/${page}?app_id=${process.env.NEXT_PUBLIC_ADZUNA_APP_ID}&app_key=${process.env.NEXT_PUBLIC_ADZUNA_APP_KEY}&results_per_page=10&what=software%20engineer&where=remote&content-type=application/json`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+
+      const json = await response.json();
+      console.log(json);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  console.log("Fetching data...");
+  console.log(getData());
+
   console.log("Jobs Data Results length:", jobsDataResults.length);
 
   const handleSwipeRight = () => {
@@ -23,7 +42,7 @@ function JobSwipePage() {
   };
 
   const goToNext = () => {
-    if (currentIndex < jobsDataResults.length - 1) {
+    if (currentIndex < jobsDataResults.length) {
       setCurrentIndex(currentIndex + 1);
     } else {
       alert("You’ve reached the end!");
