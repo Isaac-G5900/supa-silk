@@ -12,9 +12,17 @@ function JobSwipePage() {
 
   async function getData() {
     const page = 1;
-    const url = `https://api.adzuna.com/v1/api/jobs/us/search/${page}?app_id=${process.env.NEXT_PUBLIC_ADZUNA_APP_ID}&app_key=${process.env.NEXT_PUBLIC_ADZUNA_APP_KEY}&results_per_page=10&what=software%20engineer&where=remote&content-type=application/json`;
+    const url = `https://gjanycplarxcosrhqtzs.supabase.co/functions/v1/adzuna`;
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({ page: page }),
+      });
+
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
       }
