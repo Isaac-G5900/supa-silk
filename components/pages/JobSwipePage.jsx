@@ -75,7 +75,8 @@ function JobSwipePage() {
   }
 
   return (
-    <div className="h-auto w-ful flex flex-col items-center justify-center px-4">
+    <div className="card-container">
+       <div className="h-auto w-ful flex flex-col items-center justify-center px-5">
       {jobsDataResults[currentIndex] ? (
         <JobCard
           job={jobsDataResults[currentIndex]}
@@ -85,6 +86,7 @@ function JobSwipePage() {
       ) : (
         <div className="text-xl text-gray-600">No more jobs to show.</div>
       )}
+      </div>
     </div>
   );
 }

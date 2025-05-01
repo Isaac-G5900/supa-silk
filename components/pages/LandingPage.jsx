@@ -12,7 +12,7 @@ function LandingPage() {
     <div className="landing-page">
       <div className="content-container">
         {/* Logo / Brand Name */}
-        <h1 className="logo">Silk</h1>
+        {/* <h1 className="logo">Silk</h1> */}
 
         {/* Headline */}
         <h2 className="headline">Find your next job</h2>
