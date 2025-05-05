@@ -1,16 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
-// Remove bootstrap import since we're using Tailwind
-// import "bootstrap/dist/js/bootstrap.js";
+import React, { useState, useEffect } from "react";
 
-function DropdownFilter({ onFilterChange }) {
-  const [filters, setFilters] = useState({
-    jobTitle: "",
-    location: "",
-    salaryMin: "",
-    salaryMax: "",
-  });
+function DropdownFilter({ onFilterChange, setLoading, currentFilters }) {
+  const [filters, setFilters] = useState(
+    currentFilters || {
+      jobTitle: "",
+      location: "",
+      salaryMin: "",
+      salaryMax: "",
+    }
+  );
+
+  useEffect(() => {
+    setFilters(currentFilters);
+  }, [currentFilters]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -21,6 +25,7 @@ function DropdownFilter({ onFilterChange }) {
   };
 
   const handleApplyFilters = () => {
+    setLoading(true);
     onFilterChange(filters);
   };
 

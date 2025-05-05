@@ -28,7 +28,19 @@ function JobCard({ job, swipeLeft, swipeRight }) {
         {job.description.slice(0, 300)}
         {job.description.length > 300 ? "..." : ""}
       </div>
-      <div className="flex justify-between mt-16">
+
+      <div className="mt-4">
+        <a
+          className="text-blue-500 hover:underline"
+          href={job.redirect_url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Apply Now
+        </a>
+      </div>
+
+      <div className="flex justify-between mt-8">
         <CircleIcon
           icon={<XIcon size={40} />} // Pass the Lucide React SVG component
           size={50}

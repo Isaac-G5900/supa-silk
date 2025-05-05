@@ -101,7 +101,11 @@ function JobSwipePage() {
 
   return (
     <div className="h-auto w-ful flex flex-col items-center justify-center px-4">
-      <DropdownFilter onFilterChange={handleFilterChange} />
+      <DropdownFilter
+        onFilterChange={handleFilterChange}
+        setLoading={setLoading}
+        currentFilters={filters}
+      />
       {jobsDataResults[currentIndex] ? (
         <div className="mt-6">
           <JobCard
