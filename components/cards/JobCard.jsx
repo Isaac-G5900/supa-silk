@@ -29,16 +29,18 @@ function JobCard({ job, swipeLeft, swipeRight }) {
         {job.description.length > 300 ? "..." : ""}
       </div>
 
-      <div className="mt-4">
-        <a
-          className="text-blue-500 hover:underline"
-          href={job.redirect_url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Apply Now
-        </a>
-      </div>
+      {job.redirect_url ? (
+        <div className="mt-4">
+          <a
+            className="text-blue-500 hover:underline"
+            href={job.redirect_url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Apply Now
+          </a>
+        </div>
+      ) : null}
 
       <div className="flex justify-between mt-8">
         <CircleIcon
