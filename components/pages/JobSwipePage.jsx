@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import JobCard from "@/components/cards/JobCard";
+import DropdownFilter from "@/components/buttons/DropdownFilter";
 
 function JobSwipePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -10,9 +11,31 @@ function JobSwipePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+  const [filters, setFilters] = useState({
+    jobTitle: "",
+    location: "",
+    salaryMin: "",
+    salaryMax: "",
+  });
 
-  async function fetchJobs(pageNumber) {
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+    // Reset the current index and fetch filtered jobs
+    setCurrentIndex(0);
+    setJobsDataResults([]);
+    fetchJobs(1, newFilters);
+  };
+
+  async function fetchJobs(pageNumber, filters) {
     const url = `https://gjanycplarxcosrhqtzs.supabase.co/functions/v1/adzuna`;
+    const bodyRequest = {
+      page: pageNumber,
+      ...(filters.jobTitle && { jobTitle: filters.jobTitle }),
+      ...(filters.location && { location: filters.location }),
+      ...(filters.salaryMin && { salaryMin: filters.salaryMin }),
+      ...(filters.salaryMax && { salaryMax: filters.salaryMax }),
+    };
+
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -20,11 +43,13 @@ function JobSwipePage() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
         },
-        body: JSON.stringify({ page: pageNumber }),
+        body: JSON.stringify(bodyRequest),
       });
 
       if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
+        throw new Error(`API error: ${response.status}`);
       }
       console.log(response);
       const json = await response.json();
@@ -42,7 +67,7 @@ function JobSwipePage() {
   }
 
   useEffect(() => {
-    fetchJobs(pageNumber);
+    fetchJobs(pageNumber, filters); // Fetch jobs on component mount
   }, []); // Empty dependency array ensures this runs only once on mount
 
   const handleSwipeRight = () => {
@@ -62,7 +87,7 @@ function JobSwipePage() {
       // Fetch more jobs when we reach the end
       setCurrentIndex(currentIndex + 1);
       setLoading(true);
-      fetchJobs(pageNumber);
+      fetchJobs(pageNumber, filters); // Fetch more jobs
     }
   };
 
@@ -75,14 +100,20 @@ function JobSwipePage() {
   }
 
   return (
-    <div className="card-container">
-       <div className="h-auto w-ful flex flex-col items-center justify-center px-5">
+    <div className="h-auto w-ful flex flex-col items-center justify-center px-4">
+      <DropdownFilter
+        onFilterChange={handleFilterChange}
+        setLoading={setLoading}
+        currentFilters={filters}
+      />
       {jobsDataResults[currentIndex] ? (
-        <JobCard
-          job={jobsDataResults[currentIndex]}
-          swipeLeft={handleSwipeLeft}
-          swipeRight={handleSwipeRight}
-        />
+        <div className="mt-6">
+          <JobCard
+            job={jobsDataResults[currentIndex]}
+            swipeLeft={handleSwipeLeft}
+            swipeRight={handleSwipeRight}
+          />
+        </div>
       ) : (
         <div className="text-xl text-gray-600">No more jobs to show.</div>
       )}
