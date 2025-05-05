@@ -117,7 +117,6 @@ function JobSwipePage() {
       ) : (
         <div className="text-xl text-gray-600">No more jobs to show.</div>
       )}
-      </div>
     </div>
   );
 }
