@@ -4,14 +4,29 @@ import React from "react";
 import CircleIcon from "../buttons/CircleIcon";
 import { XIcon, Heart } from "lucide-react";
 function JobCard({ job, swipeLeft, swipeRight }) {
+  const formatSalary = (salary) => {
+    return salary?.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+  };
+
   return (
     <div className="w-full max-w-7/12 p-6 bg-card rounded-md shadow-xl text-left border-4 border-white">
       <h2 className="text-2xl font-bold">{job.title}</h2>
       <p className="text-gray-700">{job.company.display_name}</p>
-      <p className="text-sm text-gray-500">{job.location.display_name}</p>
+      <div>
+        <p className="text-sm text-gray-500">{job.location.display_name}</p>
+        <p className="text-sm text-gray-500">
+          {formatSalary(job.salary_min)} - {formatSalary(job.salary_max)}
+        </p>
+      </div>
+
       <div className="mt-4 text-gray-600 max-w-[95%]">
-        {job.description.slice(0, 250)}
-        {job.description.length > 250 ? "..." : ""}
+        {job.description.slice(0, 300)}
+        {job.description.length > 300 ? "..." : ""}
       </div>
       <div className="flex justify-between mt-16">
         <CircleIcon
