@@ -77,7 +77,9 @@ function JobSwipePage() {
     setSavedJobs([...savedJobs, job]);
 
     // Save to database if user is logged in
-    await saveJobToDatabase(job.id, "adzuna");
+    saveJobToDatabase(job.id, "adzuna").catch((error) =>
+      console.error("Background save error:", error)
+    );
     console.log("Saved job:", job);
     console.log("Saved jobs:", savedJobs);
 
