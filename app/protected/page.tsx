@@ -26,7 +26,14 @@ export default async function ProtectedPage() {
       </div>
       <div className="flex flex-col gap-2 items-start">
         <Link href="/job-swipe">
-          <button className="primary-button">Get Started</button>
+          <button className="px-3 py-2 bg-[#3385d1] hover:bg-[#8479fe] text-white rounded-md transition-colors">
+            Get Started
+          </button>
+        </Link>
+        <Link href="/protected/saved-jobs">
+          <button className="px-3 py-2 bg-[#3385d1] hover:bg-[#8479fe] text-white rounded-md transition-colors">
+            Saved Jobs
+          </button>
         </Link>
         <h2 className="font-bold text-2xl mb-4">Your user details</h2>
         <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
