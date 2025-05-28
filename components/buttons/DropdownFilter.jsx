@@ -9,6 +9,7 @@ function DropdownFilter({ onFilterChange, setLoading, currentFilters }) {
       location: "",
       salaryMin: "",
       salaryMax: "",
+      maxDaysOld: 30,
     }
   );
 
@@ -93,6 +94,27 @@ function DropdownFilter({ onFilterChange, setLoading, currentFilters }) {
               onChange={handleFilterChange}
             />
           </div>
+
+          <div className="space-y-2 mt-4">
+            <label
+              htmlFor="maxDaysOld"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Max Days Old
+            </label>
+            <input
+              type="number"
+              name="maxDaysOld"
+              id="maxDaysOld"
+              min="1"
+              max="365"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="e.g. 30 days"
+              value={filters.maxDaysOld}
+              onChange={handleFilterChange}
+            />
+          </div>
+
           <div className="md:col-span-2 mt-4">
             <button
               onClick={handleApplyFilters}
