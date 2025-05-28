@@ -18,6 +18,7 @@ function JobSwipePage() {
     location: "",
     salaryMin: "",
     salaryMax: "",
+    maxDaysOld: 30, // Default to 30 days
   });
 
   const handleFilterChange = (newFilters) => {
@@ -36,6 +37,7 @@ function JobSwipePage() {
       ...(filters.location && { location: filters.location }),
       ...(filters.salaryMin && { salaryMin: filters.salaryMin }),
       ...(filters.salaryMax && { salaryMax: filters.salaryMax }),
+      maxDaysOld: filters.maxDaysOld || 30,
     };
 
     try {
