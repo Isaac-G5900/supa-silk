@@ -30,6 +30,21 @@ function JobSwipePage() {
   };
 
   async function fetchJobs(pageNumber, filters) {
+  try {
+    const supabase = createClient();
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    // Get viewed job IDs if user is logged in
+    let viewedJobIds = [];
+    if (session?.user?.id) {
+      const { data: viewedJobs } = await supabase
+        .from('viewed_jobs')
+        .select('jobs(source_id)')
+        .eq('user_id', session.user.id);
+      
+      viewedJobIds = viewedJobs?.map(vj => vj.jobs?.source_id).filter(Boolean) || [];
+    }
+
     const url = `https://gjanycplarxcosrhqtzs.supabase.co/functions/v1/adzuna`;
     const bodyRequest = {
       page: pageNumber,
@@ -40,39 +55,54 @@ function JobSwipePage() {
       maxDaysOld: filters.maxDaysOld || 30,
     };
 
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify(bodyRequest),
-      });
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+      },
+      body: JSON.stringify(bodyRequest),
+    });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Error response:", errorText);
-        throw new Error(`API error: ${response.status}`);
-      }
-      console.log(response);
-      const json = await response.json();
-      const newJobs = json.results || [];
-
-      console.log("Fetched jobs...");
-      setJobsDataResults((prevJobs) => [...prevJobs, ...newJobs]);
-      setPageNumber((prevPage) => prevPage + 1);
-    } catch (error) {
-      console.error("Fetch error:", error.message);
-      setError(error.message);
-    } finally {
-      setLoading(false);
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Error response:", errorText);
+      throw new Error(`API error: ${response.status}`);
     }
+
+    const json = await response.json();
+    let newJobs = json.results || [];
+
+    // Filter out viewed jobs
+    newJobs = newJobs.filter(job => !viewedJobIds.includes(job.id));
+
+    // Only update state if we have new unviewed jobs
+    if (newJobs.length > 0) {
+      setJobsDataResults(prevJobs => [...prevJobs, ...newJobs]);
+      setPageNumber(prevPage => prevPage + 1);
+    } else if (json.results?.length > 0) {
+      // If we filtered out all jobs but there were results, fetch next page
+      return fetchJobs(pageNumber + 1, filters);
+    }
+  } catch (error) {
+    console.error("Fetch error:", error.message);
+    setError(error.message);
+  } finally {
+    setLoading(false);
   }
+}
 
   useEffect(() => {
-    fetchJobs(pageNumber, filters); // Fetch jobs on component mount
-  }, []); // Empty dependency array ensures this runs only once on mount
+  fetchJobs(pageNumber, filters);
+
+  // Track when job is viewed
+  if (jobsDataResults[currentIndex]) {
+    const currentJob = jobsDataResults[currentIndex];
+    saveViewedJobToDatabase(currentJob.id, "adzuna").catch((error) =>
+      console.error("Error tracking viewed job:", error)
+    );
+  }
+}, [currentIndex, pageNumber]); // Add currentIndex to dependencies
 
   const handleSwipeRight = async () => {
     const job = jobsDataResults[currentIndex];
@@ -143,6 +173,57 @@ function JobSwipePage() {
       console.error("Error in saveJobToDatabase:", error.message);
     }
   };
+
+  const saveViewedJobToDatabase = async (job_id, source) => {
+  try {
+    const supabase = createClient();
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (session?.user?.id) {
+      const userId = session.user.id;
+
+      // Check if job exists in jobs table
+      const { data: existingJob, error: lookupError } = await supabase
+        .from("jobs")
+        .select("id")
+        .eq("source_id", job_id)
+        .eq("source", source)
+        .single();
+
+      if (lookupError && lookupError.code !== "PGRST116") {
+        console.error("Error looking up job:", lookupError);
+        return;
+      }
+
+      if (!existingJob) {
+        console.log("Job not found in database, not saving to viewed jobs...");
+        return;
+      }
+
+      // Insert into viewed_jobs table
+      const { error } = await supabase
+        .from("viewed_jobs")
+        .insert({
+          user_id: userId,
+          job_id: existingJob.id
+        })
+        .single();
+
+      if (error) {
+        if (error.code === "23505") {
+          // Unique constraint violation - job was already viewed
+          console.log("Job was already marked as viewed");
+          return;
+        }
+        console.error("Error saving viewed job:", error);
+      } else {
+        console.log("Successfully marked job as viewed");
+      }
+    }
+  } catch (error) {
+    console.error("Error in saveViewedJobToDatabase:", error.message);
+  }
+};
 
   const handleSwipeLeft = () => {
     goToNext();
