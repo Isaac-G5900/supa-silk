@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import JobCard from "@/components/cards/JobCard";
 import DropdownFilter from "@/components/buttons/DropdownFilter";
 
+import { createClient } from "@/utils/supabase/client";
+
 function JobSwipePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [savedJobs, setSavedJobs] = useState([]);
@@ -16,6 +18,7 @@ function JobSwipePage() {
     location: "",
     salaryMin: "",
     salaryMax: "",
+    maxDaysOld: 30, // Default to 30 days
   });
 
   const handleFilterChange = (newFilters) => {
@@ -34,6 +37,7 @@ function JobSwipePage() {
       ...(filters.location && { location: filters.location }),
       ...(filters.salaryMin && { salaryMin: filters.salaryMin }),
       ...(filters.salaryMax && { salaryMax: filters.salaryMax }),
+      maxDaysOld: filters.maxDaysOld || 30,
     };
 
     try {
@@ -70,10 +74,74 @@ function JobSwipePage() {
     fetchJobs(pageNumber, filters); // Fetch jobs on component mount
   }, []); // Empty dependency array ensures this runs only once on mount
 
-  const handleSwipeRight = () => {
+  const handleSwipeRight = async () => {
     const job = jobsDataResults[currentIndex];
     setSavedJobs([...savedJobs, job]);
+
+    // Save to database if user is logged in
+    saveJobToDatabase(job.id, "adzuna").catch((error) =>
+      console.error("Background save error:", error)
+    );
+    console.log("Saved job:", job);
+    console.log("Saved jobs:", savedJobs);
+
     goToNext();
+  };
+
+  const saveJobToDatabase = async (job_id, source) => {
+    try {
+      // Create a Supabase client
+      const supabase = createClient();
+
+      // Get the current user session
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      // Only save if user is logged in
+      if (session?.user?.id) {
+        const userId = session.user.id;
+
+        const { data: existingJob, error: lookupError } = await supabase
+          .from("jobs")
+          .select("id")
+          .eq("source_id", job_id)
+          .eq("source", source)
+          .single();
+
+        if (lookupError && lookupError.code !== "PGRST116") {
+          console.error("Error looking up job:", lookupError);
+          return;
+        }
+
+        if (!existingJob) {
+          console.log("Job not found in database, not saving to user jobs...");
+          return;
+        }
+
+        const job_table_id = existingJob.id;
+
+        // Insert into saved_jobs table with just user_id and job_id
+        const { error } = await supabase.from("saved_jobs").insert({
+          user_id: userId,
+          job_id: job_table_id,
+        });
+
+        if (error) {
+          if (error.code === "23505") {
+            console.log("You've already saved this job!");
+            return;
+          }
+          console.error("Error saving job:", error);
+        } else {
+          console.log("Job saved to user saved jobs successfully");
+        }
+      } else {
+        console.log("User not logged in - job saved locally only");
+      }
+    } catch (error) {
+      console.error("Error in saveJobToDatabase:", error.message);
+    }
   };
 
   const handleSwipeLeft = () => {
