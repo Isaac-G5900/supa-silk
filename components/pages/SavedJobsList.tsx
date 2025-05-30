@@ -30,6 +30,7 @@ import {
 } from "@mui/icons-material";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const DRAWER_WIDTH = 240;
 
@@ -137,7 +138,7 @@ export default function SavedJobsList({ jobs }: Props) {
         {/* push content below your DefaultNavBar */}
         <Toolbar />
         <List>
-          <ListItemButton>
+          <ListItemButton component={Link} href="/protected">
             <ListItemIcon className="text-gray-700 dark:text-gray-100">
               <HomeIcon />
             </ListItemIcon>
@@ -147,14 +148,14 @@ export default function SavedJobsList({ jobs }: Props) {
             <ListItemIcon className="text-gray-700 dark:text-gray-100">
               <WorkIcon />
             </ListItemIcon>
-            <ListItemText primary="My Jobs" />
+            <ListItemText primary="Applied Jobs" />
           </ListItemButton>
-          <ListItemButton>
+          {/*<ListItemButton>
             <ListItemIcon className="text-gray-700 dark:text-gray-100">
               <GiftIcon />
             </ListItemIcon>
             <ListItemText primary="Gift Center" />
-          </ListItemButton>
+          </ListItemButton>*/}
 
           <ListItemButton onClick={() => setOpenOption(!openOption)}>
             <ListItemText primary="Recent Saved Jobs" />

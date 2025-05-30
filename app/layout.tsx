@@ -7,6 +7,8 @@ import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Link from "next/link";
 import "./globals.css";
+import UserDropdown from "@/components/UserDropdown";
+import { createClient } from "@/utils/supabase/server";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -23,11 +25,18 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // 1) build server‐side supabase client
+  const supabase = await createClient();
+
+  // 2) fetch the current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
@@ -44,7 +53,19 @@ export default function RootLayout({
                   <div className="flex gap-5 items-center font-semibold">
                     <Link href={"/"}>Silk</Link>
                   </div>
-                  {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
+                  <div className="flex items-center gap-4">
+                    {/*!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />*/}
+                    {!hasEnvVars ? (
+                      <EnvVarWarning />
+                    ) : user ? (
+                      <>
+                        <HeaderAuth />
+                        <UserDropdown />
+                      </>
+                    ) : (
+                      <HeaderAuth />
+                    )}
+                  </div>
                 </div>
               </nav>
               <div className="flex flex-col gap-20 max-w-none p-5">
