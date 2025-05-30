@@ -1,6 +1,6 @@
-# ADK Short Bot
+# Silk Agent
 
-A Python-based agent that helps shorten messages using Google's Agent Development Kit (ADK) and Vertex AI.
+An agent built upon Google's Python based Agent Development Kit (ADK) and Vertex AI cloud engine.
 
 ## Prerequisites
 
@@ -15,8 +15,8 @@ A Python-based agent that helps shorten messages using Google's Agent Developmen
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/bhancockio/deploy-adk-agent-engine.git
-cd adk-short-bot
+git clone https://github.com/bhancockio/deploy-adk-agent-engine.git](https://github.com/Isaac-G5900/supa-silk.git
+cd supa-silk/silkdeploy
 ```
 
 2. Install Poetry if you haven't already:
@@ -38,6 +38,7 @@ source $(poetry env info --path)/bin/activate
 
 1. Create a `.env` file in the project root with the following variables:
 ```bash
+Note: 
 GOOGLE_GENAI_USE_VERTEXAI=TRUE
 GOOGLE_CLOUD_PROJECT=your-project-id
 GOOGLE_CLOUD_LOCATION=your-location  # e.g., us-central1
@@ -74,9 +75,9 @@ poetry run deploy-local --list_sessions
 poetry run deploy-local --get_session --session_id=your-session-id
 ```
 
-4. Send a message to shorten:
+4. For locally testing agent behavior:
 ```bash
-poetry run deploy-local --send --session_id=your-session-id --message="Shorten this message: Hello, how are you doing today?"
+poetry run deploy-local --send --session_id=your-session-id --message="<your message here>"
 ```
 
 ### Remote Deployment
@@ -98,7 +99,7 @@ poetry run deploy-remote --list_sessions --resource_id=your-resource-id
 
 4. Send a message:
 ```bash
-poetry run deploy-remote --send --resource_id=your-resource-id --session_id=your-session-id --message="Hello, how are you doing today? So far, I've made breakfast today, walkted dogs, and went to work."
+poetry run deploy-remote --send --resource_id=your-resource-id --session_id=your-session-id --message="<your message here>"
 ```
 
 5. Clean up (delete deployment):
@@ -109,11 +110,11 @@ poetry run deploy-remote --delete --resource_id=your-resource-id
 ## Project Structure
 
 ```
-adk-short-bot/
-├── adk_short_bot/          # Main package directory
+silkdeploy/
+├── adk_silk_bot/          # Main package directory
 │   ├── __init__.py
 │   ├── agent.py           # Agent implementation
-│   └── prompt.py          # Prompt templates
+│   └── prompt.py          # Prompt template
 ├── deployment/            # Deployment scripts
 │   ├── local.py          # Local testing script
 │   └── remote.py         # Remote deployment script
