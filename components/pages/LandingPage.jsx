@@ -11,19 +11,12 @@ function LandingPage() {
   return (
     <div className="landing-page">
       <div className="content-container">
-        {/* Logo / Brand Name */}
-        {/* <h1 className="logo">Silk</h1> */}
-
-        {/* Headline */}
         <h2 className="headline">Find your next job</h2>
-
-        {/* Subheadline */}
         <p className="subheading">
           Silk helps you discover and <br />
           swipe through job opportunities.
         </p>
 
-        {/* Primary CTA Button */}
         <Link href="/job-swipe">
           <button className="primary-button">Get Started</button>
         </Link>
@@ -34,4 +27,5 @@ function LandingPage() {
     </div>
   );
 }
+
 export default LandingPage;
