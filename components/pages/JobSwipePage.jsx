@@ -1,9 +1,9 @@
 "use client";
-
+import "./JobSwipePage.css";
 import React, { useState, useEffect } from "react";
 import JobCard from "@/components/cards/JobCard";
 import DropdownFilter from "@/components/buttons/DropdownFilter";
-
+//import FilterSection from '"@/components/pages/FilterSection';
 import { createClient } from "@/utils/supabase/client";
 
 function JobSwipePage() {
@@ -28,6 +28,7 @@ function JobSwipePage() {
     setJobsDataResults([]);
     fetchJobs(1, newFilters);
   };
+  
 
   async function fetchJobs(pageNumber, filters) {
     const url = `https://gjanycplarxcosrhqtzs.supabase.co/functions/v1/adzuna`;
@@ -159,6 +160,8 @@ function JobSwipePage() {
     }
   };
 
+  
+
   if (loading) {
     return <div className="text-xl text-gray-600">Loading jobs...</div>;
   }
@@ -167,24 +170,31 @@ function JobSwipePage() {
     return <div className="text-xl text-red-600">Error: {error}</div>;
   }
 
+  // Update the return statement in JobSwipePage.jsx
   return (
-    <div className="h-auto w-ful flex flex-col items-center justify-center px-4">
-      <DropdownFilter
-        onFilterChange={handleFilterChange}
-        setLoading={setLoading}
-        currentFilters={filters}
-      />
-      {jobsDataResults[currentIndex] ? (
-        <div className="mt-6">
-          <JobCard
-            job={jobsDataResults[currentIndex]}
-            swipeLeft={handleSwipeLeft}
-            swipeRight={handleSwipeRight}
-          />
-        </div>
-      ) : (
-        <div className="text-xl text-gray-600">No more jobs to show.</div>
-      )}
+    <div className="swipe-page-container">
+      <div className="filters-sidebar">
+        <h2>Filters</h2>
+        <DropdownFilter
+          onFilterChange={handleFilterChange}
+          setLoading={setLoading}
+          currentFilters={filters}
+        />
+      </div>
+      
+      <div className="main-content">
+        {jobsDataResults[currentIndex] ? (
+          <div className="job-card-container">
+            <JobCard
+              job={jobsDataResults[currentIndex]}
+              swipeLeft={handleSwipeLeft}
+              swipeRight={handleSwipeRight}
+            />
+          </div>
+        ) : (
+          <div className="text-xl text-gray-600">No more jobs to show.</div>
+        )}
+      </div>
     </div>
   );
 }

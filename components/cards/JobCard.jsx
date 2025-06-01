@@ -3,6 +3,7 @@
 import React from "react";
 import CircleIcon from "../buttons/CircleIcon";
 import { XIcon, Heart } from "lucide-react";
+import "./JobDetailCard.css"; // Assuming you have some styles for the card
 function JobCard({ job, swipeLeft, swipeRight }) {
   const formatSalary = (salary) => {
     return salary?.toLocaleString("en-US", {

@@ -1,0 +1,32 @@
+.filter-heading {
+  font-family: "Arial", sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #000000;
+  margin-bottom: 2rem;
+}
+
+.filter-item {
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #333333;
+  background: none;
+  border: none;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.2s ease;
+  width: 100%;
+}
+
+.filter-item:hover {
+  color: #000000;
+}
+
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}

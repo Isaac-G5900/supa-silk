@@ -1,6 +1,7 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
+import CollapsibleDropdown from "./CollapsibleDropdown";
+
 
 function DropdownFilter({ onFilterChange, setLoading, currentFilters }) {
   const [filters, setFilters] = useState(
@@ -31,15 +32,14 @@ function DropdownFilter({ onFilterChange, setLoading, currentFilters }) {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Job Title Filter */}
+  <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
+    <div className="grid grid-cols-1 gap-4">
+      <CollapsibleDropdown label="Job Title">
         <div className="space-y-2">
           <label
             htmlFor="jobTitle"
             className="block text-sm font-medium text-gray-700"
           >
-            Job Title
           </label>
           <input
             type="text"
@@ -51,14 +51,14 @@ function DropdownFilter({ onFilterChange, setLoading, currentFilters }) {
             onChange={handleFilterChange}
           />
         </div>
+      </CollapsibleDropdown>
 
-        {/* Location Filter */}
+      <CollapsibleDropdown label="Location">
         <div className="space-y-2">
           <label
             htmlFor="location"
             className="block text-sm font-medium text-gray-700"
           >
-            Location
           </label>
           <input
             type="text"
@@ -70,12 +70,10 @@ function DropdownFilter({ onFilterChange, setLoading, currentFilters }) {
             onChange={handleFilterChange}
           />
         </div>
+      </CollapsibleDropdown>
 
-        {/* Salary Range */}
-        <div className="space-y-2 md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Salary Range
-          </label>
+      <CollapsibleDropdown label="Salary Range">
+        <div className="space-y-2">
           <div className="grid grid-cols-2 gap-4">
             <input
               type="number"
@@ -94,39 +92,36 @@ function DropdownFilter({ onFilterChange, setLoading, currentFilters }) {
               onChange={handleFilterChange}
             />
           </div>
-
-          <div className="space-y-2 mt-4">
-            <label
-              htmlFor="maxDaysOld"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Max Days Old
-            </label>
-            <input
-              type="number"
-              name="maxDaysOld"
-              id="maxDaysOld"
-              min="1"
-              max="365"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="e.g. 30 days"
-              value={filters.maxDaysOld}
-              onChange={handleFilterChange}
-            />
-          </div>
-
-          <div className="md:col-span-2 mt-4">
-            <button
-              onClick={handleApplyFilters}
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-            >
-              Apply Filters
-            </button>
-          </div>
         </div>
+      </CollapsibleDropdown>
+
+      <CollapsibleDropdown label="Max Days Old">
+        <div className="space-y-2">
+          <input
+            type="number"
+            name="maxDaysOld"
+            id="maxDaysOld"
+            min="1"
+            max="365"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="e.g. 30 days"
+            value={filters.maxDaysOld}
+            onChange={handleFilterChange}
+          />
+        </div>
+      </CollapsibleDropdown>
+
+      <div className="mt-4">
+        <button
+          onClick={handleApplyFilters}
+          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+        >
+          Apply Filters
+        </button>
       </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default DropdownFilter;

@@ -1,0 +1,32 @@
+.filters-sidebar {
+  padding: 2rem;
+  border-right: 1px solid #eee;
+  width: 300px; /* Add a fixed width */
+  min-width: 300px; /* Prevent shrinking */
+}
+
+.filters-sidebar h2 {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 2rem;
+  color: #000000;
+}
+
+.swipe-page-container {
+  display: flex;
+}
+
+.filter-item {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #333333;
+  margin-bottom: 1rem;
+  background: none;
+  border: none;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
