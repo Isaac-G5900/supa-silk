@@ -1,20 +1,31 @@
 .filters-sidebar {
-  padding: 2rem;
+  padding: 1rem;  /* Reduced overall padding */
   border-right: 1px solid #eee;
-  width: 300px; /* Add a fixed width */
-  min-width: 300px; /* Prevent shrinking */
+  width: 300px;
+  min-width: 300px;
+  min-height: calc(100vh - 64px);
+  background-color: #ffffff;
+  margin: 0;
+  padding-top: 0;
+  position: fixed;
+  top: 64px;
+  left: 0;
 }
-
 .filters-sidebar h2 {
   font-family: "Times New Roman", Times, serif;
   font-size: 24px;
   font-weight: 400;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;  /* Reduced margin */
   color: #000000;
+  padding: 0 1rem;  /* Add horizontal padding */
 }
 
 .swipe-page-container {
   display: flex;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: relative; /* Add this */
 }
 
 .filter-item {
@@ -29,4 +40,10 @@
   width: 100%;
   cursor: pointer;
   padding: 0.5rem 0;
+}
+
+.main-content {
+  margin-left: 300px; /* Should match the sidebar width */
+  flex: 1;
+  padding: 2rem;
 }

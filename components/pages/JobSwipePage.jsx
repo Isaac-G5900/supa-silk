@@ -1,5 +1,6 @@
 "use client";
 import "./JobSwipePage.css";
+import "@/components/cards/JobCard.css";
 import React, { useState, useEffect } from "react";
 import JobCard from "@/components/cards/JobCard";
 import DropdownFilter from "@/components/buttons/DropdownFilter";
@@ -13,6 +14,8 @@ function JobSwipePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+  const [swipeDirection, setSwipeDirection] = useState("");
+  const [flipped, setFlipped] = useState(false);
   const [filters, setFilters] = useState({
     jobTitle: "",
     location: "",
@@ -76,17 +79,20 @@ function JobSwipePage() {
   }, []); // Empty dependency array ensures this runs only once on mount
 
   const handleSwipeRight = async () => {
+    setSwipeDirection("swipe-right");
     const job = jobsDataResults[currentIndex];
     setSavedJobs([...savedJobs, job]);
 
-    // Save to database if user is logged in
-    saveJobToDatabase(job.id, "adzuna").catch((error) =>
-      console.error("Background save error:", error)
-    );
-    console.log("Saved job:", job);
-    console.log("Saved jobs:", savedJobs);
+    setTimeout(() => {
+      saveJobToDatabase(job.id, "adzuna").catch((error) =>
+        console.error("Background save error:", error)
+      );
+      console.log("Saved job:", job);
+      console.log("Saved jobs:", savedJobs);
 
-    goToNext();
+      goToNext();
+      setSwipeDirection("");
+    }, 500);
   };
 
   const saveJobToDatabase = async (job_id, source) => {
@@ -146,7 +152,16 @@ function JobSwipePage() {
   };
 
   const handleSwipeLeft = () => {
-    goToNext();
+    setSwipeDirection("swipe-left"); // swipe direction set to left
+    setTimeout(() => {
+      setFlipped(false);
+      goToNext();
+      setSwipeDirection(""); // Reset swipe direction after animation
+    }, 500); // animation duration
+  };
+
+  const toggleFlip = () => {
+    setFlipped(!flipped);
   };
 
   const goToNext = () => {
@@ -184,11 +199,13 @@ function JobSwipePage() {
       
       <div className="main-content">
         {jobsDataResults[currentIndex] ? (
-          <div className="job-card-container">
+          <div className={`job-card-container ${swipeDirection}`}>
             <JobCard
               job={jobsDataResults[currentIndex]}
+              flipped={flipped}
               swipeLeft={handleSwipeLeft}
               swipeRight={handleSwipeRight}
+              toggleFlip={toggleFlip}
             />
           </div>
         ) : (

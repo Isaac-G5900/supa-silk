@@ -1,0 +1,65 @@
+.job-card {
+    transition: transform 0.5s ease;
+    transform-style: preserve-3d;
+    position: relative;
+  }
+  
+  .job-card.flipped {
+    transform: rotateY(180deg);
+  }
+  
+  .flipped-content {
+    transform: rotateY(180deg); /* Unmirror the text */
+    backface-visibility: hidden; /* Ensure the backface is hidden */
+  }
+  
+  .job-card > div,
+  .job-card > h2,
+  .job-card > p {
+    backface-visibility: hidden; /* Prevent mirrored text on the front side */
+  }
+
+  .more-details-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    backface-visibility: hidden; /* Prevent mirroring of the button text */
+    transition: transform 0.5s ease;
+  }
+  
+  .job-card.flipped .more-details-button {
+    top: 0rem; /* Move to the top */
+    right: 30rem; /* Keep it aligned to the right */
+    transform: rotateY(180deg); /* Unmirror the button text */
+  }
+
+  @keyframes swipe-left {
+    0% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-100%) rotate(-15deg);
+      opacity: 0;
+    }
+  }
+  
+  @keyframes swipe-right {
+    0% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(100%) rotate(15deg);
+      opacity: 0;
+    }
+  }
+  
+  .swipe-left {
+    animation: swipe-left 0.5s ease forwards;
+  }
+  
+  .swipe-right {
+    animation: swipe-right 0.5s ease forwards;
+  }
