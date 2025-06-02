@@ -1,17 +1,30 @@
 .job-card {
-    transition: transform 0.5s ease;
-    transform-style: preserve-3d;
-    position: relative;
-  }
+  position: relative;
+  width: 400px; /* Set a fixed width */
+  max-width: 100%; /* Make it responsive */
+  min-height: 485px; /* Minimum height */
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  margin: 0 auto; /* Center the card */
+}
+
   
   .job-card.flipped {
     transform: rotateY(180deg);
   }
   
-  .flipped-content {
-    transform: rotateY(180deg); /* Unmirror the text */
-    backface-visibility: hidden; /* Ensure the backface is hidden */
-  }
+.flipped-content {
+  min-height: auto; /* Remove fixed height */
+  width: 100%;
+  padding: 1.5rem;
+  line-height: 1.5; /* Better readability */
+  max-height: calc(80vh - 4rem); /* Account for padding */
+  overflow-y: auto;
+}
+
+.card-content {
+  transition: all 0.3s ease;
+}
   
   .job-card > div,
   .job-card > h2,
@@ -19,21 +32,22 @@
     backface-visibility: hidden; /* Prevent mirrored text on the front side */
   }
 
-  .more-details-button {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    z-index: 10;
-    backface-visibility: hidden; /* Prevent mirroring of the button text */
-    transition: transform 0.5s ease;
-  }
+.more-details-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0rem;
+  background-color: transparent;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  color: #2368db;
+  transition: all 0.3s ease;
+  margin-left: auto; /* Push to right */
+}
   
-  .job-card.flipped .more-details-button {
-    top: 0rem; /* Move to the top */
-    right: 30rem; /* Keep it aligned to the right */
-    transform: rotateY(180deg); /* Unmirror the button text */
-  }
-
+.job-card.flipped .more-details-button {
+  visibility: visible; /* Show when flipped */
+  opacity: 1; /* Make fully visible */
+}
   @keyframes swipe-left {
     0% {
       transform: translateX(0);
@@ -63,3 +77,40 @@
   .swipe-right {
     animation: swipe-right 0.5s ease forwards;
   }
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; /* For Safari */
+  padding: 1rem;
+}
+.card-front {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: rotateY(0deg);
+}
+
+.card-back {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: rotateY(180deg);
+  overflow-y: auto;
+  max-height: 90vh; /* Increased from 80vh */
+  padding: 1.5rem;
+  overscroll-behavior: contain; /* Improves scroll behavior */
+}
+
+.card-back .more-details-button {
+  transform: none;
+  margin-left: 0; /* Reset margin for back button */
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+.job-card.flipped {
+  transform: rotateY(180deg);
+}

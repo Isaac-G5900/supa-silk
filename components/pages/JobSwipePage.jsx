@@ -109,6 +109,8 @@ function JobSwipePage() {
       if (session?.user?.id) {
         const userId = session.user.id;
 
+        
+
         const { data: existingJob, error: lookupError } = await supabase
           .from("jobs")
           .select("id")
