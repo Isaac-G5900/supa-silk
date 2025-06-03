@@ -3,7 +3,9 @@
 import React from "react";
 import CircleIcon from "../buttons/CircleIcon";
 import { XIcon, Heart } from "lucide-react";
-function JobCard({ job, swipeLeft, swipeRight }) {
+import "./JobCard.css"; // Assuming you have some styles for the card
+import "./JobDetailCard.css"; // Assuming you have some styles for the card
+function JobCard({ job, swipeLeft, swipeRight, toggleFlip, flipped }) {
   const formatSalary = (salary) => {
     return salary?.toLocaleString("en-US", {
       style: "currency",
@@ -51,63 +53,80 @@ function JobCard({ job, swipeLeft, swipeRight }) {
   };
 
   return (
-    <div className="w-full max-w-7/12 p-6 bg-card rounded-md shadow-xl text-left border-4 border-white">
-      <div className="flex justify-between items-start">
+  <div className={`job-card ${flipped ? 'flipped' : ''}`}>
+    <div className="card-front">
+      <div className="card-content">
+        <h2 className="text-2xl font-bold">{job.title}</h2>
+        <p className="text-gray-700">{job.company.display_name}</p>
         <div>
-          <h2 className="text-2xl font-bold">{job.title}</h2>
-          <p className="text-gray-700">{job.company.display_name}</p>
+          <p className="text-sm text-gray-500">{job.location.display_name}</p>
+          <p className="text-sm text-gray-500">
+            {formatSalary(job.salary_min)} - {formatSalary(job.salary_max)}
+          </p>
         </div>
-        <p
-          className="text-sm text-gray-500 cursor-help hover:text-blue-500 transition-colors"
-          title={formatExactDate(job.created)}
-        >
-          {formatDate(job.created)}
-        </p>
-      </div>
 
-      <div>
-        <p className="text-sm text-gray-500">{job.location.display_name}</p>
-        <p className="text-sm text-gray-500">
-          {formatSalary(job.salary_min)} - {formatSalary(job.salary_max)}
-        </p>
-      </div>
-
-      <div className="mt-4 text-gray-600 max-w-[95%]">
-        {job.description.slice(0, 300)}
-        {job.description.length > 300 ? "..." : ""}
-      </div>
-
-      {job.redirect_url ? (
-        <div className="mt-4">
-          <a
-            className="text-blue-500 hover:underline"
-            href={job.redirect_url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Apply Now
-          </a>
+        <div className="mt-4 text-gray-600 max-w-[95%]">
+          {job.description.slice(0, 300)}
+          {job.description.length > 300 ? "..." : ""}
         </div>
-      ) : null}
 
-      <div className="flex justify-between mt-8">
-        <CircleIcon
-          icon={<XIcon size={40} />}
-          size={50}
-          color="#e5e7eb"
-          hoverColor="#91a5c2"
-          onClick={swipeLeft}
-        />
-        <CircleIcon
-          icon={<Heart size={30} color="#ffffff" fill="#ffffff" />}
-          size={50}
-          color="#2368db"
-          hoverColor="#91a5c2"
-          onClick={swipeRight}
-        />
+        {job.redirect_url && (
+          <div className="mt-4 flex items-center">
+            <a
+              className="text-blue-500 hover:underline"
+              href={job.redirect_url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Apply Now
+            </a>
+            <button
+              className="more-details-button"
+              onClick={toggleFlip}
+            >
+              More Details
+            </button>
+          </div>
+        )}
+
+        <div className="icon-controls flex justify-between">
+          <CircleIcon
+            icon={<XIcon size={40} />}
+            size={50}
+            color="#e5e7eb"
+            hoverColor="#91a5c2"
+            onClick={swipeLeft}
+          />
+          <CircleIcon
+            icon={<Heart size={30} color="#ffffff" fill="#ffffff" />}
+            size={50}
+            color="#2368db"
+            hoverColor="#91a5c2"
+            onClick={swipeRight}
+          />
+        </div>
       </div>
     </div>
-  );
+
+    <div className="card-back">
+      <button
+        className="more-details-button"
+        onClick={toggleFlip}
+      >
+        Back
+      </button>
+        <div className="card-content">
+          <h2 className="text-xl font-bold">More About the Job</h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Posted {formatDate(job.created)}
+          </p>
+          <div className="mt-4">
+            {job.description}
+              </div>
+        </div>
+    </div>
+  </div>
+);
 }
 
 export default JobCard;
