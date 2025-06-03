@@ -32,8 +32,8 @@ function DropdownFilter({ onFilterChange, setLoading, currentFilters }) {
   };
 
   return (
-  <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
-    <div className="grid grid-cols-1 gap-4">
+  <div className="bg-#f8fafc p-4 rounded-lg shadow-md border border-gray-200 h-screen sticky top-0">
+    <div className="grid grid-cols-1 gap-10">
       <CollapsibleDropdown label="Job Title">
         <div className="space-y-2">
           <label

@@ -1,6 +1,7 @@
+
 .filter-heading {
   font-family: "Arial", sans-serif;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 400;
   color: #000000;
   margin-bottom: 2rem;
@@ -20,6 +21,8 @@
   width: 100%;
 }
 
+
+
 .filter-item:hover {
   color: #000000;
 }
@@ -30,3 +33,4 @@
   gap: 1rem;
   padding: 1rem;
 }
+

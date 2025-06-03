@@ -31,7 +31,6 @@ import {
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { addRecentJob, getRecentJobs, RecentJob } from '@/components/pages/recentJobs';
 
 
 const DRAWER_WIDTH = 240;

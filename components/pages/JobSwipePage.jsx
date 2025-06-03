@@ -343,7 +343,7 @@ useEffect(() => {
   return (
     <div className="swipe-page-container">
       <div className="filters-sidebar">
-        <h2>Filters</h2>
+  <h3 className="text-lg mb-4 p-4 font-normal border-2 border-gray-200 rounded-lg mx-4">Filters</h3>
         <DropdownFilter
           onFilterChange={handleFilterChange}
           setLoading={setLoading}

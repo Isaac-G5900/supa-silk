@@ -1,18 +1,25 @@
 .filters-sidebar {
-  padding: 1rem;  /* Reduced overall padding */
+  padding: 0;
   border-right: 1px solid #eee;
   width: 300px;
   min-width: 300px;
-  min-height: calc(100vh - 64px);
-  background-color: #ffffff;
+  min-height: 100vh;  /* Changed to full viewport height */
+  background: #e5eef5;
   margin: 0;
-  padding-top: 0;
   position: fixed;
-  top: 64px;
+  top: 60px;           /* Changed from 64px to 0 */
   left: 0;
 }
+.filters-sidebar h3 {
+  margin: 0;
+  padding: 10rem 1rem 1rem 1rem;  /* Added padding-top only */
+  background: #e5eef5;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: flex-end;
+}
 .filters-sidebar h2 {
-  font-family: "Times New Roman", Times, serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 24px;
   font-weight: 400;
   margin-bottom: 1rem;  /* Reduced margin */
@@ -22,25 +29,34 @@
 
 .swipe-page-container {
   display: flex;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  position: relative; /* Add this */
+  width: 100%;
+  gap: 2rem;
+  padding: 1rem;
 }
 
 .filter-item {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 16px;
   font-weight: 400;
-  color: #333333;
-  margin-bottom: 1rem;
-  background: none;
+  color: #2c3e50;  /* Darker blue-gray color */
+  margin-bottom: 1.5rem;  /* Increased spacing between items */
+  background: #f8fafc;  /* Light background */
   border: none;
+  border-radius: 8px;  /* Rounded corners */
   text-align: left;
   width: 100%;
   cursor: pointer;
-  padding: 0.5rem 0;
+  padding: 1rem 1.2rem;  /* Increased padding */
+  transition: all 0.2s ease;  /* Smooth hover effect */
 }
+
+.filter-item:hover {
+  background: #ffffff;
+  transform: translateX(5px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+
 
 .main-content {
   margin-left: 300px; /* Should match the sidebar width */
