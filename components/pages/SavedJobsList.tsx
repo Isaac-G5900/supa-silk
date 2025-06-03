@@ -31,6 +31,8 @@ import {
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { addRecentJob, getRecentJobs, RecentJob } from '@/components/pages/recentJobs';
+
 
 const DRAWER_WIDTH = 240;
 
@@ -57,7 +59,6 @@ export default function SavedJobsList({ jobs }: Props) {
   const theme = useTheme();
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
-
   const isDark = theme.palette.mode === "dark";
 
   // Filter jobs based on search term

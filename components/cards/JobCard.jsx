@@ -89,7 +89,7 @@ function JobCard({ job, swipeLeft, swipeRight, toggleFlip, flipped }) {
           </div>
         )}
 
-        <div className="flex justify-between mt-8">
+        <div className="icon-controls flex justify-between">
           <CircleIcon
             icon={<XIcon size={40} />}
             size={50}
